@@ -47,15 +47,15 @@ describe("Comparing random integers array sum time execution", function() {
     let time = 0;
     let randomArr = utils.randomIntArray();
     it("Count array with 1 thread", async function() {
-        const threadResults = await sumArray.countSum(1, randomArr);
+        const result = await sumArray.countSum(1, randomArr);
 
     });
     it("Count array with 2 thread", async function() {
-        const threadResults = await sumArray.countSum(2, randomArr);
+        const result = await sumArray.countSum(2, randomArr);
 
     });
     it("Count array with 4 thread", async function() {
-        const threadResults = await sumArray.countSum(4, randomArr);
+        const result = await sumArray.countSum(4, randomArr);
 
     });
 });
