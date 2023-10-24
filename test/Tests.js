@@ -42,19 +42,56 @@ describe("Testing SumArray counSum function", function () {
         });
     });
 
-    describe("Comparing random integers array sum time execution", function () {
+    describe("Comparing equal random integers array sum time execution and resulting sums", function () {
         let randomArr = utils.randomIntArray();
-        it("Comparing random integers array sum time execution 1 thread with 2 threads", async function () {
-            const result = await sumArray.countSum(1, randomArr);
+        it("Comparing random integers array sum time execution 1 thread with 2 threads - the latter is faster", async function () {
+            const startOneThread = Date.now();
+            const resultOneThread = await sumArray.countSum(1, randomArr);
+            const endOneThread = Date.now();
+            console.log(`Execution time One Thread: ${endOneThread - startOneThread} ms`);
+            console.log("Total Sum One Thread: ", resultOneThread);
 
+            const startTwoThreads = Date.now();
+            const resultTwoThreads = await sumArray.countSum(2, randomArr);
+            const endTwoThreads = Date.now();
+            console.log(`Execution time Two Thread: ${endTwoThreads - startTwoThreads} ms`);
+            console.log("Total Sum Two Threads: ", resultTwoThreads);
+
+            assert.equal(resultOneThread, resultTwoThreads);
+            assert.isTrue((endOneThread - startOneThread) > (endTwoThreads - startTwoThreads));
         });
-        it("Comparing random integers array sum time execution 1 thread with 4 threads", async function () {
-            const result = await sumArray.countSum(2, randomArr);
+        it("Comparing random integers array sum time execution 1 thread with 4 threads - the latter is faster", async function () {
+            const startOneThread = Date.now();
+            const resultOneThread = await sumArray.countSum(1, randomArr);
+            const endOneThread = Date.now();
+            console.log(`Execution time One Thread: ${endOneThread - startOneThread} ms`);
+            console.log("Total Sum One Thread: ", resultOneThread);
 
+            const startFourThreads = Date.now();
+            const resultFourThreads = await sumArray.countSum(4, randomArr);
+            const endFourThreads= Date.now();
+            console.log(`Execution time Four Threads: ${endFourThreads - startFourThreads} ms`);
+            console.log("Total Sum Four Threads: ", resultFourThreads);
+
+            assert.equal(resultOneThread, resultFourThreads);
+            assert.isTrue((endOneThread - startOneThread) > (endFourThreads - startFourThreads));
         });
-        it("Count array with 4 thread", async function () {
-            const result = await sumArray.countSum(4, randomArr);
+        it("Comparing random integers array sum time execution 2 threads with 4 threads - results are pretty close", async function () {
+            const startTwoThreads = Date.now();
+            const resultTwoThreads = await sumArray.countSum(2, randomArr);
+            const endTwoThreads = Date.now();
+            console.log(`Execution time Two Thread: ${endTwoThreads - startTwoThreads} ms`);
+            console.log("Total Sum Two Threads: ", resultTwoThreads);
 
+            const startFourThreads = Date.now();
+            const resultFourThreads = await sumArray.countSum(4, randomArr);
+            const endFourThreads= Date.now();
+            console.log(`Execution time Four Thread: ${endFourThreads - startFourThreads} ms`);
+            console.log("Total Sum Four Threads: ", resultFourThreads);
+
+            assert.equal(resultTwoThreads, resultFourThreads);
+            assert.approximately(endFourThreads - startFourThreads,
+                endTwoThreads - startTwoThreads, 20, "2 or 4 threads time execution floats within 40 ms delta");
         });
     });
 });
